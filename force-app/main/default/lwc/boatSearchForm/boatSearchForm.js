@@ -1,4 +1,4 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import getBoatTypes from '@salesforce/apex/BoatDataService.getBoatTypes';
 
 export default class BoatSearchForm extends LightningElement {
@@ -10,11 +10,14 @@ export default class BoatSearchForm extends LightningElement {
   searchOptions;
 
   // Wire a custom Apex Method
-  boatTypes({ error, data }) {
+  @wire(getBoatTypes)
+  wiredBoatTypes({ error, data }) {
     if (data) {
-      this.searchOptions = data.map(type => {
-        // TODO: complete the logic
-      });
+      this.searchOptions = data.map(type => ({
+        label: type.Name,
+        value: type.Id
+      }));
+      this.error = undefined;
     } else if (error) {
       this.searchOptions = undefined;
       this.error = error;
@@ -26,6 +29,7 @@ export default class BoatSearchForm extends LightningElement {
   handSearchOptionChange(event) {
     // Create the const searchEvent
     // searchEvent must be the new custom event search
+    console.log(JSON.stringify(event));
     searchEvent;
     this.dispatchEvent(searchEvent);
   }
