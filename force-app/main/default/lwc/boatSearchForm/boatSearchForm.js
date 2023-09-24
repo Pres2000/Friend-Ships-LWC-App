@@ -17,10 +17,12 @@ export default class BoatSearchForm extends LightningElement {
         label: type.Name,
         value: type.Id
       }));
+      console.log('search options ::: ' + this.searchOptions);
       this.error = undefined;
     } else if (error) {
       this.searchOptions = undefined;
       this.error = error;
+      console.log('error ::: ' + this.error);
     }
   }
 
